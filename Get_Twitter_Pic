@@ -1,64 +1,70 @@
 #!/usr/bin/env python
 # encoding: utf-8
-# Copyright 2018 ZhibinHuang hzhibin@bu.edu
-
+#Author - Zhibin Huang
 import tweepy #https://github.com/tweepy/tweepy
-import json
-
+import io 
+import os
+import re
+import urllib.request
 
 #Twitter API credentials
-consumer_key = "your_key"
-consumer_secret = "your_secret_key"
-access_key = "your_access_key"
-access_secret = "your_access_secret_key"
+consumer_key = "xxx"
+consumer_secret = "xxx"
+access_key = "xxx"
+access_secret = "xxx"
 
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_key, access_secret)
+api = tweepy.API(auth)
 
-def get_all_tweets(screen_name):
-    
-    #Twitter only allows access to a users most recent 3240 tweets with this method
-    
-    #authorize twitter, initialize tweepy
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_key, access_secret)
-    api = tweepy.API(auth)
-    
-    #initialize a list to hold all the tweepy Tweets
-    alltweets = []    
-    
-    #make initial request for most recent tweets (200 is the maximum allowed count)
-    new_tweets = api.user_timeline(screen_name = screen_name,count=10)
-    
-    #save most recent tweets
-    alltweets.extend(new_tweets)
-    
-    #save the id of the oldest tweet less one
-    oldest = alltweets[-1].id - 1
-    
-    #keep grabbing tweets until there are no tweets left to grab
-    while len(new_tweets) > 0:
-        
-        #all subsiquent requests use the max_id param to prevent duplicates
-        new_tweets = api.user_timeline(screen_name = screen_name,count=10,max_id=oldest)
-        
-        #save most recent tweets
-        alltweets.extend(new_tweets)
-        
-        #update the id of the oldest tweet less one
-        oldest = alltweets[-1].id - 1
-        if(len(alltweets) > 15):
-            break
-        print ("...%s tweets downloaded so far % (len(alltweets))")
-       
-    #write tweet objects to JSON
-    file = open('tweet.json', 'w') 
-    print ("Writing tweet objects to JSON please wait...")
-    for status in alltweets:
-        json.dump(status._json,file,sort_keys = True,indent = 4)
-    
-    #close the file
-    print ("Done")
-    file.close()
+#get all urls in doc json
+s=open("tweet.json","r").read()
+results=re.findall("(?isu)(http\://[a-zA-Z0-9\.\?/&\=\:]+)",s)
+open("urls.txt","w").write("\r\n".join(results))
 
-if __name__ == '__main__':
-    #pass in the username of the account you want to download
-    get_all_tweets("@StephenCurry30")
+#find all pictures' url which contain .jpg
+with open("urls.txt","r",encoding="utf-8") as f:
+    lines = f.readlines()
+    #print(lines)
+with open("picurl.txt","w",encoding="utf-8") as f_w:
+    for line in lines:
+        if "jpg" in line:
+            {}
+        else:
+            continue
+        f_w.write(line)
+
+#drop the same urls because in json doc, it only differ in http & https
+rFile = open("picurl.txt", "r")
+wFile = open("single.txt", "w")
+lines = rFile.readlines()
+rFile.close()
+s = set()
+for i in lines:
+    s.add(i)
+for i in s:
+    wFile.write(i)
+wFile.close()
+
+#download the pics from twitter
+file_path = '/Users/huang/Documents/tw/twipic'
+file_name = 0
+try:
+    if not os.path.exists(file_path):
+        os.makedirs(file_path)
+
+    with open("single.txt","r",encoding="utf-8") as f_w:
+        lines = f_w.readlines()
+        print(len(lines))
+        x = 0
+        for line in lines:
+            file_suffix = '.jpg'
+            file_name = file_name + 1
+            filename1 = '{}{}{}{}'.format(file_path,os.sep,file_name,file_suffix)
+            print(filename1)
+            urllib.request.urlretrieve(line,filename=filename1)
+            x = x+1
+except IOError as e:
+    print("IOError")
+except Exception as e:
+    print("Exception")
