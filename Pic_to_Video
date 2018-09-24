@@ -1,0 +1,5 @@
+#open the terminal and run the follow code
+#remember to replace the file location of your owns
+
+./ffmpeg -y -r 1 -i /Users/huang/Documents/tw/twipic/%02d.jpg -vcodec libx264 -r 1 -t 15 -b 200k  test.mp4
+
