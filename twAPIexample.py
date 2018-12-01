@@ -6,10 +6,10 @@
 import tweepy  # https://github.com/tweepy/tweepy
 import json
 
-consumer_key = "7Svv2WQwvFnrc1IH66oOzY3LO"
-consumer_secret = "49zuq8PP8tybmvejn0dANGMFHcsReuSB3Hj6fDPzNNxhu8Rdjj"
-access_key = "1039178017455648769-lTIA4PL5y6hHkzpc5cQwxzGFcQ69b8"
-access_secret = "IPil1kyX129MO7Wwx0hGiDJocU01xbztci1pqX5cKnzqQ"
+consumer_key = "your key"
+consumer_secret = "your key"
+access_key = "your key"
+access_secret = "your key"
 
 
 def get_all_tweets(screen_name):
