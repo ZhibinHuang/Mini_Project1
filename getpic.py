@@ -8,16 +8,7 @@ import re
 import urllib.request
 
 def getpic(filename_appendix):
-    #Twitter API credentials
-    consumer_key = "your key"
-    consumer_secret = "your key"
-    access_key = "your key"
-    access_secret = "your key"
-
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_key, access_secret)
-    api = tweepy.API(auth)
-
+    
     #get all urls in doc json
     s=open("tweet.json","r").read()
     results=re.findall("(?isu)(http\://[a-zA-Z0-9\.\?/&\=\:]+)",s)
