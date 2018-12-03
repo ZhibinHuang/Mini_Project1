@@ -17,7 +17,7 @@ To use my API for your own project, you can simply download all python files and
 
 The following photos show the result, MySQL database and MongoDB of my project:
 
-The user ZhibinHuang download StephenCurry30 from recent 40 tweets and store tags in databases. After then, I search the keyword "basketball" and returen the results to the screen.
+The user ZhibinHuang download recent 40 tweets from twitter @StephenCurry30 and store tags in databases. After then, I search the keyword "basketball" and returen the results to the screen.
 
 ![draw](https://user-images.githubusercontent.com/43126280/49332056-65ef6780-f574-11e8-83c3-77b279fb93df.jpeg)
 
